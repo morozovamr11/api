@@ -1,14 +1,20 @@
 package main
 
 import (
-	"api/internal/hello"
+	//"api/configs"
+	"api/configs"
+	"api/internal/auth"
 	"fmt"
 	"net/http"
 )
 
 func main() {
+	conf := configs.LoadConfig() //загрузили конфиг
 	router := http.NewServeMux()
-	hello.NewHelloHandler(router)
+	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
+		Config: conf,
+	})
+
 	server := http.Server{
 		Addr:    ":8081",
 		Handler: router,

@@ -8,14 +8,20 @@ import (
 )
 
 type Config struct {
-	Db DbConfig
+	Db   DbConfig
+	Auth AuthConfig
 }
 
 type DbConfig struct {
-	Dsn string
+	Dsn  string
+	Auth AuthConfig
 }
 
-func LoadConfig() *Config {
+type AuthConfig struct {
+	Secret string
+}
+
+func LoadConfig() *Config { //вернули структуру Config кот содержит Db, Auth
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Error loading env file, using default config")
@@ -23,6 +29,9 @@ func LoadConfig() *Config {
 	return &Config{
 		Db: DbConfig{
 			Dsn: os.Getenv("DSN"),
+		},
+		Auth: AuthConfig{
+			Secret: os.Getenv("TOKEN"),
 		},
 	}
 }
