@@ -4,6 +4,7 @@ import (
 	//"api/configs"
 	"api/configs"
 	"api/internal/auth"
+	"api/internal/link"
 	"api/pkg/db"
 	"fmt"
 	"net/http"
@@ -13,9 +14,13 @@ func main() {
 	conf := configs.LoadConfig() //загрузили конфиг
 	_ = db.NewDb(conf)
 	router := http.NewServeMux()
+
+	//handlers
 	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
 		Config: conf,
 	})
+	link.NewLinkHandler(router, link.LinkHandlerDeps{})
+	//end handlers
 
 	server := http.Server{
 		Addr:    ":8081",

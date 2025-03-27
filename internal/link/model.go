@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// gorm model тк содержит gorm.Model
 type Link struct {
 	gorm.Model
 	Url  string `json:"url"`
