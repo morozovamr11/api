@@ -12,14 +12,18 @@ import (
 
 func main() {
 	conf := configs.LoadConfig() //загрузили конфиг
-	_ = db.NewDb(conf)
+	db := db.NewDb(conf)
 	router := http.NewServeMux()
 
+	//repositories
+	linkRepository := link.NewLinkRepository(db)
 	//handlers
 	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
 		Config: conf,
 	})
-	link.NewLinkHandler(router, link.LinkHandlerDeps{})
+	link.NewLinkHandler(router, link.LinkHandlerDeps{
+		LinkRepository: linkRepository,
+	})
 	//end handlers
 
 	server := http.Server{
