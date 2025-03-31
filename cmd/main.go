@@ -6,6 +6,7 @@ import (
 	"api/internal/auth"
 	"api/internal/link"
 	"api/pkg/db"
+	"api/pkg/middleware"
 	"fmt"
 	"net/http"
 )
@@ -28,7 +29,7 @@ func main() {
 
 	server := http.Server{
 		Addr:    ":8081",
-		Handler: router,
+		Handler: middleware.Logging(router), //использование middleware
 	}
 	fmt.Println("Server is listening on port 8081")
 	err := server.ListenAndServe()
