@@ -13,7 +13,8 @@ func Logging(next http.Handler) http.Handler { //передается что-т�
 			ResponseWriter: w,
 			StatusCode:     http.StatusOK, //default значение
 		}
-		next.ServeHTTP(wrapper, r)                                               //происходит вызов router. без middleware он бы вызвался автоматически. с middleware автоматически вызывается то что в handler те Handler: middleware.Logging(router),                                            //вместо w http.ResponseWriter передали модифицированнный wrapper чтобы сохранить код
+		//вместо w http.ResponseWriter передали модифицированнный wrapper чтобы сохранить код
+		next.ServeHTTP(wrapper, r)                                               //происходит вызов router. без middleware он бы вызвался автоматически. с middleware автоматически вызывается то что в handler те Handler: middleware.Logging(router),
 		log.Println(wrapper.StatusCode, r.Method, r.URL.Path, time.Since(start)) //!используется пакет log в log.Println
 	})
 }

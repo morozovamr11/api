@@ -1,6 +1,7 @@
 package link
 
 import (
+	"api/pkg/middleware"
 	"api/pkg/reqst"
 	"api/pkg/resp"
 	"net/http"
@@ -22,7 +23,7 @@ func NewLinkHandler(router *http.ServeMux, deps LinkHandlerDeps) {
 		LinkRepository: deps.LinkRepository,
 	} //создание структуры LinkHandler чтобы использовать потом ее методы
 	router.HandleFunc("POST /link", handler.Create())
-	router.HandleFunc("PATCH /link/{id}", handler.Update())
+	router.Handle("PATCH /link/{id}", middleware.IsAuthed(handler.Update()))
 	router.HandleFunc("GET /{hash}", handler.GoTo())
 	router.HandleFunc("DELETE /link/{id}", handler.Delete())
 }
